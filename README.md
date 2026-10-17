@@ -115,7 +115,7 @@ git clone https://github.com/SmitHunter/gig-radar && cd gig-radar
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 
-pytest                                   # 10 tests, no network needed
+pytest                                   # no network needed
 TICKETMASTER_API_KEY=xxx python -m gig_radar --dry-run   # print alerts, send nothing
 ```
 
