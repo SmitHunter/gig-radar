@@ -7,6 +7,7 @@ from datetime import date
 
 from gig_radar.config import load_watchlist
 from gig_radar.diff import State, find_alerts
+from gig_radar.models import group_alerts
 from gig_radar.notify import body_lines, enabled_notifiers, title
 from gig_radar.sources.ticketmaster import Ticketmaster
 
@@ -33,16 +34,17 @@ def run(argv: list[str] | None = None) -> int:
 
     events = []
     for artist in watchlist.artists:
-        found = [e for e in tm.events_for(artist, watchlist.countries) if watchlist.wants_city(e.city)]
+        found = [e for e in tm.events_for(artist, watchlist.countries) if watchlist.wants_place(e.city, e.state)]
         print(f"{artist}: {len(found)} upcoming show(s)")
         events += found
 
     alerts = find_alerts(events, state, watchlist.remind_hours_before)
-    print(f"{len(alerts)} alert(s)")
+    digests = group_alerts(alerts)
+    print(f"{len(alerts)} alert(s) in {len(digests)} message(s)")
 
     if args.dry_run:
-        for a in alerts:
-            print("\n" + "\n  ".join([title(a), *body_lines(a)]))
+        for d in digests:
+            print("\n" + "\n  ".join([title(d), *body_lines(d)]))
         return 0
 
     notifiers = enabled_notifiers()
@@ -53,7 +55,7 @@ def run(argv: list[str] | None = None) -> int:
     sent, failed = 0, 0
     for n in notifiers if alerts else []:
         try:
-            n.send(alerts)
+            n.send(digests)
             sent += 1
             print(f"sent via {n.name}")
         except Exception as exc:  # one broken channel shouldn't block the others

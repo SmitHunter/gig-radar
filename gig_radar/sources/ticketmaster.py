@@ -39,6 +39,7 @@ def parse_event(raw: dict, artist: str) -> Event:
         venue=venue.get("name", "").strip(),
         city=venue.get("city", {}).get("name", "").strip(),
         country=venue.get("country", {}).get("countryCode", ""),
+        state=venue.get("state", {}).get("stateCode", ""),
         starts_at=_parse_dt(start.get("dateTime")),
         local_date=start.get("localDate", "TBA"),
         sales=sales,

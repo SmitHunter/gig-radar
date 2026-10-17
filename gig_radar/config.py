@@ -22,10 +22,12 @@ class Watchlist(BaseModel):
     def upper_countries(cls, v: list[str]) -> list[str]:
         return [c.strip().upper() for c in v]
 
-    def wants_city(self, city: str) -> bool:
+    def wants_place(self, city: str, state: str) -> bool:
+        """Match a city/suburb or a state code, so 'VIC' catches Docklands and Melbourne."""
         if not self.cities:
             return True
-        return city.casefold() in {c.casefold() for c in self.cities}
+        wanted = {c.casefold() for c in self.cities}
+        return city.casefold() in wanted or state.casefold() in wanted
 
 
 def load_watchlist(path: str | Path = "watchlist.yml") -> Watchlist:

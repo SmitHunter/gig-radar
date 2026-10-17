@@ -28,8 +28,8 @@ You list your artists in one file. A free GitHub Action checks Ticketmaster ever
 
 | When | Alert |
 |---|---|
-| 🎤 Show is announced | Artist, venue, city, date, **every presale + on-sale time**, ticket link |
-| ⏰ ~24h before tickets open | "Artist Presale opens Thu 5 Nov, 9:00 AM. Set an alarm." |
+| 🎤 Shows are announced | **One message per artist**: each venue with its dates, **every presale + on-sale time** (per state when they differ), ticket links |
+| ⏰ ~24h before tickets open | "Powderfinger: General on-sale (VIC) opens Mon 19 Oct, 10 AM AEDT. Set an alarm." |
 
 No server, no app, no database. You're never told twice about the same thing.
 
@@ -44,7 +44,7 @@ artists:
   - Fred again..
   - Tame Impala
 countries: [AU]        # or NZ, GB, US, ... as many as you like
-cities: []             # optional, e.g. [Sydney, Melbourne]
+cities: []             # optional, e.g. [VIC, NSW]: states catch every suburb
 remind_hours_before: 24
 ```
 

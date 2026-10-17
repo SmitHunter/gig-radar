@@ -16,7 +16,7 @@
         },
         "_embedded": {
           "venues": [
-            { "name": "Qudos Bank Arena", "city": { "name": "Sydney" }, "country": { "countryCode": "AU" } }
+            { "name": "Qudos Bank Arena", "city": { "name": "Sydney" }, "state": { "stateCode": "NSW" }, "country": { "countryCode": "AU" } }
           ]
         }
       },
@@ -28,7 +28,7 @@
         "sales": {},
         "_embedded": {
           "venues": [
-            { "name": "Rod Laver Arena", "city": { "name": "Melbourne" }, "country": { "countryCode": "AU" } }
+            { "name": "Rod Laver Arena", "city": { "name": "Melbourne" }, "state": { "stateCode": "VIC" }, "country": { "countryCode": "AU" } }
           ]
         }
       }

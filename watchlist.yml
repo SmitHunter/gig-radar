@@ -11,7 +11,9 @@ artists:
 countries:
   - AU
 
-# Optional: only these cities. Leave empty for the whole country.
+# Optional: only these places. Use state codes (VIC, NSW, QLD, WA, SA, TAS, ACT, NT):
+# Ticketmaster lists suburbs, so "Melbourne" would miss Marvel Stadium (Docklands).
+# Leave empty for the whole country.
 cities: []
 
 # How early to remind you before a presale / on-sale opens.
