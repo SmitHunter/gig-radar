@@ -2,7 +2,8 @@
 
 # 📡 gig-radar
 
-**Get told about gigs *before* the tickets drop, not after they sell out.**
+**A self-hosted gig alert bot for your Discord, Telegram or inbox.**<br>
+New shows from your artists, plus a reminder before every presale. Runs free on GitHub Actions.
 
 [![tests](https://github.com/SmitHunter/gig-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/SmitHunter/gig-radar/actions/workflows/ci.yml)
 ![python](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)
@@ -19,11 +20,7 @@
 
 ## The problem
 
-Spotify told me about a gig **after** it had sold out. Bandsintown and Songkick are better, but they:
-
-- tell you a show was **announced**, not **when tickets go on sale**, and the presale is the part that matters;
-- mostly track your **home city**, not "anywhere in Australia";
-- want another app, another account, and another inbox to check.
+Spotify told me about a gig **after** it had sold out. Good gig apps exist, but they all live inside *their* app or *their* emails, and they get lost among every other notification. I wanted alerts in the places my mates and I already talk, on a schedule I control, from code I can read.
 
 ## The fix
 
@@ -93,16 +90,23 @@ gig_radar/
 └── main.py                 # fetch → diff → notify → save
 ```
 
-## How it compares
+## Why not just use an existing app?
 
-| | gig-radar | Bandsintown / Songkick | Spotify emails |
-|---|:-:|:-:|:-:|
-| Alert when a show is announced | ✅ | ✅ | ✅ (often late) |
-| **Reminder before presale / on-sale** | ✅ | sometimes | ❌ |
-| Whole country(s), not just your city | ✅ | partly | ❌ |
-| Alerts in Discord / Telegram | ✅ | ❌ | ❌ |
-| Share alerts with friends (group chat) | ✅ | ❌ | ❌ |
-| Open source, $0, no account | ✅ | ❌ | ❌ |
+Honestly, for most people one of these is enough:
+
+- **[Whatslively](https://whatslively.com/)** (Australia): reads your Spotify/Apple Music, covers Ticketek, Ticketmaster, Moshtix and Oztix, and pings you before on-sales. If you're in Australia and want an app, start there.
+- **Bandsintown / Songkick**: follow artists, get alerted when they announce shows near you.
+- **Ticketmaster Favourites**: alerts for new shows and on-sales, Ticketmaster events only.
+
+gig-radar is for when you want something different:
+
+| | gig-radar | Gig apps |
+|---|:-:|:-:|
+| Alerts land in **your Discord server or Telegram group**, so mates see them together | ✅ | ❌ |
+| You own it: open source, self-hosted, no account, no tracking, $0 | ✅ | ❌ |
+| Set your own rules: countries, cities, how early to remind | ✅ | partly |
+| Hackable: add a source or channel in one small Python file | ✅ | ❌ |
+| Covers every Australian ticket site | ❌ Ticketmaster only (see Limits) | ✅ Whatslively |
 
 ## Run it locally
 
@@ -117,14 +121,14 @@ TICKETMASTER_API_KEY=xxx python -m gig_radar --dry-run   # print alerts, send no
 
 ## Limits (honest ones)
 
-- **Ticketmaster only, for now.** In Australia, shows ticketed only through Ticketek, Moshtix or Oztix won't appear yet.
+- **Ticketmaster only.** Ticketek and Oztix only give API access to approved partners, and I found no public Moshtix API. gig-radar uses official APIs only and doesn't scrape, so shows sold only through those sites won't appear. If you get partner access, adding a source is one file in `gig_radar/sources/`.
 - **Presale codes aren't in the API.** You get the presale *time*; the code still comes from the artist's mailing list. Sign up there too.
 - Free API key: 5,000 calls/day. 20 artists checked every 6h uses about 160.
 - GitHub pauses scheduled workflows in repos with no activity for 60 days. It emails you first, and one click turns them back on.
 
 ## Roadmap
 
-- [ ] More sources: Bandsintown, Ticketek
+- [ ] More sources, where an official API allows it
 - [ ] `.ics` calendar feed of every on-sale time
 - [ ] "Similar artists touring near you" from your Spotify top artists
 
