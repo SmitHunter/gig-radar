@@ -1,0 +1,37 @@
+{
+  "_embedded": {
+    "events": [
+      {
+        "id": "Z7r9jZ1A7jYvA",
+        "name": "Fred again.. — Australian Tour",
+        "url": "https://www.ticketmaster.com.au/event/Z7r9jZ1A7jYvA",
+        "dates": {
+          "start": { "localDate": "2027-02-14", "localTime": "19:30:00", "dateTime": "2027-02-14T08:30:00Z" }
+        },
+        "sales": {
+          "public": { "startDateTime": "2026-10-20T23:00:00Z" },
+          "presales": [
+            { "name": "Artist Presale", "startDateTime": "2026-10-18T23:00:00Z", "endDateTime": "2026-10-19T22:00:00Z" }
+          ]
+        },
+        "_embedded": {
+          "venues": [
+            { "name": "Qudos Bank Arena", "city": { "name": "Sydney" }, "country": { "countryCode": "AU" } }
+          ]
+        }
+      },
+      {
+        "id": "Z7r9jZ1A7jYvB",
+        "name": "Fred again..",
+        "url": "https://www.ticketmaster.com.au/event/Z7r9jZ1A7jYvB",
+        "dates": { "start": { "localDate": "2027-02-18" } },
+        "sales": {},
+        "_embedded": {
+          "venues": [
+            { "name": "Rod Laver Arena", "city": { "name": "Melbourne" }, "country": { "countryCode": "AU" } }
+          ]
+        }
+      }
+    ]
+  }
+}

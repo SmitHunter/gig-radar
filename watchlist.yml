@@ -1,0 +1,18 @@
+# 👋 Edit me. That's the whole setup.
+
+# Who you never want to miss.
+artists:
+  - Fred again..
+  - Tame Impala
+  - Royel Otis
+  - Ocean Alley
+
+# ISO country codes to watch (AU, NZ, GB, US, CA, IE, DE, ...).
+countries:
+  - AU
+
+# Optional: only these cities. Leave empty for the whole country.
+cities: []
+
+# How early to remind you before a presale / on-sale opens.
+remind_hours_before: 24

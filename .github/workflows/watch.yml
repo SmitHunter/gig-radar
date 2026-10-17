@@ -1,0 +1,54 @@
+name: watch
+
+on:
+  schedule:
+    - cron: "17 */6 * * *" # every 6 hours (odd minute dodges the top-of-hour queue)
+  workflow_dispatch: # "Run workflow" button for an instant test
+
+permissions:
+  contents: write # lets the job save state.json so you're never alerted twice
+
+concurrency:
+  group: watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    env:
+      TZ: ${{ vars.TIMEZONE || 'Australia/Sydney' }} # alert times shown in your timezone
+      TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      EMAIL_TO: ${{ secrets.EMAIL_TO }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install .
+      - name: Load state
+        # Kept on its own branch so forks start fresh and main stays clean.
+        run: git fetch --depth=1 origin state && git show origin/state:state.json > state.json || echo "first run"
+      - run: python -m gig_radar
+      - name: Save state
+        if: always()
+        run: |
+          [ -f state.json ] || exit 0
+          mv state.json "$RUNNER_TEMP/state.json"
+          git config user.name "gig-radar"
+          git config user.email "gig-radar@users.noreply.github.com"
+          if git rev-parse --verify -q origin/state >/dev/null; then
+            git switch -C state origin/state
+          else
+            git switch --orphan state
+          fi
+          cp "$RUNNER_TEMP/state.json" state.json
+          git add state.json
+          git diff --cached --quiet || (git commit -q -m "chore: update state" && git push origin state)
