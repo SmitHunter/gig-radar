@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Protocol
 
 from gig_radar.models import Alert
@@ -27,10 +27,16 @@ def title(alert: Alert) -> str:
     return f"⏰ Tickets soon: {e.artist} — {alert.sale.name} {fmt_time(alert.sale.starts_at)}"
 
 
-def body_lines(alert: Alert) -> list[str]:
+def body_lines(alert: Alert, now: datetime | None = None) -> list[str]:
     e = alert.event
+    now = now or datetime.now(timezone.utc)
     lines = [f"{e.name}", f"📍 {e.where}", f"📅 {e.local_date}"]
-    upcoming = e.sales if alert.kind == "announced" else [alert.sale]
+    if alert.kind == "announced":
+        upcoming = [s for s in e.sales if s.starts_at > now]
+        if e.sales and not upcoming:
+            lines.append("🎟️ On sale now")
+    else:
+        upcoming = [alert.sale]
     for s in upcoming:
         lines.append(f"🎟️ {s.name}: {fmt_time(s.starts_at)}")
     if e.url:

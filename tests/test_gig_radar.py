@@ -7,6 +7,7 @@ import pytest
 
 from gig_radar.config import Watchlist
 from gig_radar.diff import State, find_alerts
+from gig_radar.notify import body_lines
 from gig_radar.notify.discord import Discord
 from gig_radar.notify.email import Email
 from gig_radar.sources.ticketmaster import Ticketmaster, parse_event
@@ -109,3 +110,11 @@ def test_discord_embed_and_email_digest(events):
     msg = Email("smtp.test", 465, "me@test", "pw", "you@test").build(alerts)
     assert msg["Subject"] == "🎶 gig-radar: 2 updates"
     assert "Rod Laver Arena" in msg.get_content()
+
+
+def test_announcement_hides_past_sales_and_says_on_sale_now(events):
+    alert = find_alerts(events[:1], State(), remind_hours=24, now=NOW)[0]
+    mid = datetime(2026, 10, 19, 12, 0, tzinfo=timezone.utc)  # presale passed, public on-sale still ahead
+    assert [l for l in body_lines(alert, now=mid) if "🎟️" in l] == [l for l in body_lines(alert, now=mid) if "General" in l]
+    after = datetime(2026, 11, 1, tzinfo=timezone.utc)
+    assert "🎟️ On sale now" in body_lines(alert, now=after)
