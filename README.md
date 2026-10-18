@@ -10,9 +10,9 @@ New shows from your artists, plus a reminder before every presale. Runs free on 
 ![cost](https://img.shields.io/badge/hosting-%240-22c55e)
 ![setup](https://img.shields.io/badge/setup-~5%20min-8B5CF6)
 
-<img src="docs/alert-preview.svg" alt="Example gig-radar alerts in Discord: a new show announcement and a presale reminder" width="680">
+<img src="docs/discord-alerts.png" alt="Real gig-radar alerts in Discord: a Powderfinger on-sale reminder, a new Kasabian show and 12 new Tina Arena shows, each with presale times" width="616">
 
-<sub>Example alerts, shown in Discord. Telegram and email get the same info.</sub>
+<sub>Real alerts from a run on 18 Oct 2026. Telegram and email get the same info.</sub>
 
 </div>
 
